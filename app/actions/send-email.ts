@@ -15,24 +15,30 @@ export async function sendContactEmail(formData: FormData) {
   }
 
   // Validate environment variables
-  const mailHost = process.env.MAIL_HOST || 'smtp.gmail.com';
-  const mailPort = process.env.MAIL_PORT || '587';
-  const mailUsername = process.env.MAIL_USERNAME || 'jcornejo@proscom.cl';
-  const mailPassword = process.env.MAIL_PASSWORD || 'dzrj lqwm dakj jpfg';
+  const mailHost = process.env.MAIL_HOST;
+  const mailPort = process.env.MAIL_PORT;
+  const mailUsername = process.env.MAIL_USERNAME;
+  const mailPassword = process.env.MAIL_PASSWORD;
 
   console.log("SMTP Configuration:", {
-    host: mailHost,
-    port: mailPort,
+    host: mailHost || "NOT SET",
+    port: mailPort || "NOT SET",
     user: mailUsername ? "***" : "NOT SET",
-    pass: mailPassword ? "***" : "NOT SET",
-    envHost: process.env.MAIL_HOST ? "SET" : "NOT SET",
-    envUser: process.env.MAIL_USERNAME ? "SET" : "NOT SET"
+    pass: mailPassword ? "***" : "NOT SET"
   });
+
+  if (!mailHost || !mailUsername || !mailPassword) {
+    console.error("Missing SMTP configuration in environment variables");
+    return { 
+      success: false, 
+      message: "Configuración de correo incompleta. Contacta al administrador." 
+    };
+  }
 
   // Gmail SMTP configuration
   const transporter = nodemailer.createTransport({
     host: mailHost,
-    port: parseInt(mailPort),
+    port: parseInt(mailPort || "587"),
     secure: false, // Use STARTTLS for port 587
     auth: {
       user: mailUsername,
