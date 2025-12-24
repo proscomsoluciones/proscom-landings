@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { DemoModalProvider } from "@/components/DemoModalContext";
+import DemoModal from "@/components/DemoModal";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +30,37 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <DemoModalProvider>
+          {children}
+          <DemoModal />
+          <Toaster 
+            position="top-center"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#fff',
+                color: '#1e293b',
+                padding: '16px',
+                borderRadius: '12px',
+                boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+                fontSize: '15px',
+                fontWeight: '500',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#10b981',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+        </DemoModalProvider>
       </body>
     </html>
   );

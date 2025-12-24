@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useDemoModal } from './DemoModalContext';
 
 type ColorScheme = 'organizaciones' | 'deporte' | 'educacion' | 'agricultura' | 'ganaderia' | 'mineria';
 
@@ -58,6 +59,7 @@ interface NavbarProps {
 export default function Navbar({ colorScheme, sectorName }: NavbarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const { openModal } = useDemoModal();
     const colors = colorSchemes[colorScheme];
 
     useEffect(() => {
@@ -105,12 +107,12 @@ export default function Navbar({ colorScheme, sectorName }: NavbarProps) {
                                 {link.label}
                             </a>
                         ))}
-                        <a
-                            href="#contacto"
+                        <button
+                            onClick={() => openModal(colorScheme)}
                             className={`ml-4 px-6 py-2 rounded-lg text-sm font-semibold text-white ${colors.bg} hover:opacity-90 transition-opacity shadow-md`}
                         >
                             Solicitar Demo
-                        </a>
+                        </button>
                     </div>
 
                     {/* Mobile menu button */}
@@ -151,13 +153,15 @@ export default function Navbar({ colorScheme, sectorName }: NavbarProps) {
                                     {link.label}
                                 </a>
                             ))}
-                            <a
-                                href="#contacto"
-                                onClick={handleLinkClick}
+                            <button
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    openModal(colorScheme);
+                                }}
                                 className={`mx-4 mt-2 px-6 py-3 rounded-lg text-sm font-semibold text-white ${colors.bg} hover:opacity-90 transition-opacity text-center shadow-md`}
                             >
                                 Solicitar Demo
-                            </a>
+                            </button>
                         </div>
                     </div>
                 )}

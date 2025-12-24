@@ -1,7 +1,11 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
 import Navbar from './Navbar';
+import { useDemoModal } from './DemoModalContext';
+
 
 // Color scheme type
 type ColorScheme = 'organizaciones' | 'deporte' | 'educacion' | 'agricultura' | 'ganaderia' | 'mineria';
@@ -176,6 +180,7 @@ export default function SectorLanding({
     finalCtaText
 }: Props) {
     const colors = colorSchemes[colorScheme];
+    const { openModal } = useDemoModal();
     
     return (
         <div className="flex flex-col min-h-screen bg-white text-slate-800 font-sans">
@@ -192,15 +197,17 @@ export default function SectorLanding({
                                 {subtitle}
                             </p>
                             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                                <Link 
-                                    href={ctaLink}
+                                <button 
+                                    onClick={() => openModal(colorScheme)}
                                     className={`inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl transition-all transform hover:scale-105 ${colors.primary} ${colors.shadow} shadow-xl`}
                                 >
                                     {ctaText}
                                     <ArrowRightIcon />
-                                </Link>
+                                </button>
                                 <Link 
-                                    href="#features"
+                                    href="https://www.proscom.cl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-slate-700 bg-white/80 backdrop-blur-sm border-2 border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 transition-all shadow-lg"
                                 >
                                     Conocer más
@@ -383,13 +390,13 @@ export default function SectorLanding({
                     <p className="text-white/90 text-lg lg:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
                         Únete a las organizaciones que ya han optimizado su gestión con Proscom.
                     </p>
-                    <Link 
-                        href={ctaLink}
+                    <button 
+                        onClick={() => openModal(colorScheme)}
                         className={`inline-flex items-center justify-center px-10 py-5 text-lg font-bold bg-white rounded-xl hover:bg-slate-50 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105 ${colors.primaryText}`}
                     >
                         {finalCtaText}
                         <ArrowRightIcon />
-                    </Link>
+                    </button>
                 </div>
             </section>
         </div>
